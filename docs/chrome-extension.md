@@ -48,6 +48,8 @@ Stops when the list ends, next is disabled, no new deduped rows appear, or conte
 | Login wall in log | Log in on the tab first, then re-run |
 | Empty export | Run **Detect table** before **Run scrape** |
 
+**ListKit / agent handoff:** [listkit-scrape-handoff.md](./listkit-scrape-handoff.md) — live DOM notes, verification, next-agent debug steps.
+
 ## Advanced: cloud API (optional)
 
 The client extension does not need a backend. Self-hosted cloud sync is advanced and optional — deploy your own API and keep credentials in your host env vars, never in git.

@@ -57,10 +57,12 @@ Human walkthrough: [docs/setup-walkthrough.md](docs/setup-walkthrough.md) · Age
 Scrape paginated lists in your logged-in Chrome tab and export CSV — no Railway, API URL, or token.
 
 1. `chrome://extensions` → Developer mode → **Load unpacked** → select `extension/`
-2. Open a results page (directory, community members, etc.)
+2. Open a results page (directory, community members, ListKit People, etc.)
 3. Side panel → **Detect table** → **Run scrape** → **Export CSV**
 
 Guide: [docs/chrome-extension.md](docs/chrome-extension.md)
+
+**ListKit handoff (for agents):** [docs/listkit-scrape-handoff.md](docs/listkit-scrape-handoff.md)
 
 Cloud API hosting is advanced and optional; the client extension works without it.
 
