@@ -34,9 +34,16 @@
           <option value="load_more">Load more</option>
           <option value="infinite_scroll">Infinite scroll</option>
         </select>
+        <select id="speedSelect" title="Delay between pages (anti-bot pacing)">
+          <option value="fast">Fast</option>
+          <option value="normal" selected>Normal</option>
+          <option value="slow">Slow (polite)</option>
+        </select>
+      </div>
+      <div class="row">
         <button id="locateBtn" class="secondary">Locate next button</button>
       </div>
-      <div id="paginationInfo" class="muted">Auto-detects numbered pagers, next buttons, load-more, or scroll.</div>
+      <div id="paginationInfo" class="muted">Auto-detects numbered pagers, next buttons, load-more, or scroll. Speed adds a jittered human-like delay between pages.</div>
     </section>
 
     <section>

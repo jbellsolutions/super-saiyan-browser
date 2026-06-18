@@ -161,9 +161,7 @@ window.__superBrowserIdsEngine = (() => {
       // Otherwise prefer the highest-scoring candidate that looks like a real data
       // table (≥2 columns), so a 1-column filter sidebar / nav list isn't chosen while
       // the main grid is momentarily empty during a page load.
-      const dataIdx = tables.findIndex(
-        (t) => t.children[0] && Object.keys(extractRowObject(t.children[0])).length >= 2,
-      );
+      const dataIdx = tables.findIndex((t) => t.children[0] && rowCells(t.children[0]).length >= 2);
       tableIndex = dataIdx >= 0 ? dataIdx : 0;
     }
     return tables;
@@ -174,32 +172,82 @@ window.__superBrowserIdsEngine = (() => {
     return tables[tableIndex] || null;
   }
 
-  // ---------- extraction (faithful IDS path-based) ----------
-  function extractRowObject(rowEl) {
-    const fields = {};
-    function setField(value, path, suffix) {
-      if (!value) return;
-      const base = path + (suffix ? ` ${suffix}` : "");
-      let key = base;
-      let count = 0;
-      for (const existing of Object.keys(fields)) if (existing.startsWith(base)) count += 1;
-      if (count > 0) key = `${base} ${count + 1}`;
-      fields[key] = value;
+  // ---------- extraction (positional cells = stable columns) ----------
+  // A row's columns are its direct cell children, aligned by index across every row. This is
+  // why a table is a table; the previous path-based keys drifted whenever a row's internal
+  // structure varied (logo present/absent), scattering data across columns.
+  function rowCells(rowEl) {
+    if (rowEl.tagName === "TR") {
+      return Array.from(rowEl.children).filter((c) => c.tagName === "TD" || c.tagName === "TH");
     }
-    function walk(node, path) {
-      if (!node || node.nodeType !== 1) return;
-      if (SKIP.has(node.nodeName.toLowerCase())) return;
-      const segment = `/${node.nodeName.toLowerCase()}${classNames(node)
-        .map((c) => `.${cssEscape(c)}`)
-        .join("")}`;
-      const nextPath = path + segment;
-      setField(directText(node), nextPath);
-      if (node.href) setField(node.href, nextPath, "href");
-      if (node.src) setField(node.src, nextPath, "src");
-      for (const child of node.children) walk(child, nextPath);
+    let cells = Array.from(rowEl.children).filter((c) => !SKIP.has(c.nodeName.toLowerCase()));
+    // Descend through a single structural wrapper (some grids wrap all cells in one node).
+    let guard = 0;
+    while (cells.length === 1 && cells[0].children.length > 1 && guard < 3) {
+      cells = Array.from(cells[0].children).filter((c) => !SKIP.has(c.nodeName.toLowerCase()));
+      guard += 1;
     }
-    walk(rowEl, "");
-    return fields;
+    return cells;
+  }
+
+  function cellValue(cell) {
+    const text = nodeText(cell);
+    if (text) return text;
+    const link = cell.querySelector ? cell.querySelector("a[href]") : null;
+    if (link) return link.getAttribute("href") || "";
+    const img = cell.querySelector ? cell.querySelector("img") : null;
+    if (img) return img.getAttribute("alt") || img.getAttribute("src") || "";
+    return "";
+  }
+
+  // Best-effort column names: <thead>/<th> for real tables, else an element directly above the
+  // grid, horizontally aligned to it, with a matching cell count and short label text.
+  function detectHeaders(tableEl, rows) {
+    if (!rows.length) return null;
+    const n = rowCells(rows[0]).length;
+    const table = tableEl.tagName === "TABLE" ? tableEl : tableEl.closest ? tableEl.closest("table") : null;
+    if (table) {
+      const ths = table.querySelectorAll("thead th, thead td");
+      if (ths.length) return Array.from(ths).map(nodeText);
+      const headRow = table.querySelector("tr");
+      if (headRow && headRow.querySelector("th")) return Array.from(headRow.children).map(nodeText);
+    }
+    const gr = tableEl.getBoundingClientRect();
+    const firstTop = rows[0].getBoundingClientRect().top;
+    let best = null;
+    for (const el of document.body.querySelectorAll("*")) {
+      if (el === tableEl || rows.includes(el)) continue;
+      const r = el.getBoundingClientRect();
+      if (r.top >= firstTop || r.bottom < firstTop - 260) continue;
+      if (Math.abs(r.left - gr.left) > 60 || r.width < gr.width * 0.6) continue;
+      const kids = Array.from(el.children).filter((c) => !SKIP.has(c.nodeName.toLowerCase()));
+      if (kids.length < n - 1 || kids.length > n + 1) continue;
+      const texts = kids.map(nodeText).filter(Boolean);
+      const avg = texts.reduce((a, t) => a + t.length, 0) / (texts.length || 1);
+      if (texts.length >= Math.min(5, n - 2) && avg < 28 && (!best || r.top > best.top)) {
+        best = { top: r.top, cells: kids.map(nodeText) };
+      }
+    }
+    return best ? best.cells : null;
+  }
+
+  // Anti-bot / block detection — surfaced so the scrape loop can pause instead of hammering.
+  function detectBlock() {
+    const body = ((document.body && document.body.innerText) || "").toLowerCase();
+    const SIGNALS = [
+      "verify you are human", "are you a robot", "confirm you are not a robot",
+      "unusual traffic", "automated traffic", "too many requests", "rate limit",
+      "access denied", "request blocked", "checking your browser before", "please complete the captcha",
+    ];
+    for (const s of SIGNALS) if (body.includes(s)) return s;
+    if (
+      document.querySelector(
+        'iframe[src*="captcha" i], iframe[src*="challenge" i], iframe[src*="recaptcha" i], iframe[src*="turnstile" i], #challenge-form, [class*="cf-challenge" i]',
+      )
+    ) {
+      return "captcha_challenge";
+    }
+    return null;
   }
 
   function getTableData(selector) {
@@ -215,19 +263,21 @@ window.__superBrowserIdsEngine = (() => {
         children = current.children;
         // Only pin a genuine multi-column table. A 1-column filter sidebar / nav list seen
         // while the main grid is still loading must not get locked in for the rest of the run.
-        const cols = children[0] ? Object.keys(extractRowObject(children[0])).length : 0;
+        const cols = children[0] ? rowCells(children[0]).length : 0;
         if (cols >= 2) window.__superBrowserSelectedTable = { selector: current.selector, tableIndex };
       }
     }
-    if (!tableEl || !children.length) return [];
+    if (!tableEl || !children.length) return { rows: [], headers: null };
 
     const rows = [];
     for (const child of children) {
-      const fields = extractRowObject(child);
-      if (!Object.keys(fields).length) continue;
-      rows.push({ source: "ids_engine", raw_text: nodeText(child), fields });
+      const cellEls = rowCells(child);
+      if (cellEls.length && cellEls.every((c) => c.tagName === "TH")) continue; // a header row, not data
+      const cells = cellEls.map(cellValue);
+      if (!cells.some((c) => c)) continue;
+      rows.push({ source: "ids_engine", raw_text: nodeText(child), cells });
     }
-    return rows;
+    return { rows, headers: detectHeaders(tableEl, children) };
   }
 
   function tableSignature() {
@@ -272,25 +322,56 @@ window.__superBrowserIdsEngine = (() => {
     const intEls = clickables().filter((b) => /^\d{1,4}$/.test(nodeText(b)) && isVisible(b));
     if (intEls.length < 2) return null;
 
-    const groups = new Map();
+    // Score ancestors (up to 4 levels) by how many integer links they contain, then pick the
+    // tightest container holding ≥2 — handles flat button pagers AND <li><a> (Bootstrap) pagers.
+    const score = new Map();
     for (const el of intEls) {
-      const p = el.parentElement;
-      if (!p) continue;
-      if (!groups.has(p)) groups.set(p, []);
-      groups.get(p).push(el);
+      let p = el.parentElement;
+      let depth = 0;
+      while (p && depth < 4) {
+        score.set(p, (score.get(p) || 0) + 1);
+        p = p.parentElement;
+        depth += 1;
+      }
     }
-    let pager = null;
-    for (const [, btns] of groups) {
-      if (btns.length < 2) continue;
-      if (!pager || btns.length > pager.length) pager = btns;
+    let container = null;
+    let best = 1;
+    for (const [c, n] of score) {
+      if (n < 2) continue;
+      const area = c.offsetWidth * c.offsetHeight;
+      if (n > best || (n === best && container && area < container.offsetWidth * container.offsetHeight)) {
+        best = n;
+        container = c;
+      }
     }
-    if (!pager) return null;
-    pager.sort((a, b) => a.getBoundingClientRect().left - b.getBoundingClientRect().left);
+    if (!container) return null;
+    const pager = intEls
+      .filter((b) => container.contains(b))
+      .sort((a, b) => a.getBoundingClientRect().left - b.getBoundingClientRect().left);
+    if (pager.length < 2) return null;
 
+    // Current page = the marked-active one; else inferred from a ?page= URL param; else the
+    // lowest visible number (we're on the first page). Then click current+1.
+    let current = null;
     const active = detectActivePage(pager);
-    if (!active) return null;
-    const n = parseInt(nodeText(active), 10);
-    const next = pager.find((b) => parseInt(nodeText(b), 10) === n + 1 && !isDisabled(b));
+    if (active) {
+      current = parseInt(nodeText(active), 10);
+    } else {
+      const url = new URL(location.href);
+      for (const k of ["page", "page_num", "pageNumber", "p", "pg"]) {
+        if (url.searchParams.has(k)) {
+          const v = parseInt(url.searchParams.get(k), 10);
+          if (!Number.isNaN(v)) {
+            current = v;
+            break;
+          }
+        }
+      }
+      if (current == null) {
+        current = Math.min(...pager.map((b) => parseInt(nodeText(b), 10)).filter((n) => !Number.isNaN(n)));
+      }
+    }
+    const next = pager.find((b) => parseInt(nodeText(b), 10) === current + 1 && !isDisabled(b));
     if (next) {
       next.scrollIntoView({ block: "center", inline: "center" });
       dispatchMouseClick(next);
@@ -300,11 +381,13 @@ window.__superBrowserIdsEngine = (() => {
   }
 
   function detectActivePage(btns) {
-    // aria-current
-    let a = btns.find((b) => b.getAttribute("aria-current"));
+    // aria-current (on the link or its wrapping <li>)
+    let a = btns.find((b) => b.getAttribute("aria-current") || b.parentElement?.getAttribute("aria-current"));
     if (a) return a;
-    // class hint
-    a = btns.find((b) => /(^|[\s_-])(active|selected|current)([\s_-]|$)/i.test(b.className || ""));
+    // active/selected/current class on the link or its wrapper (<li class="active"><a>…)
+    a = btns.find((b) =>
+      /(^|[\s_-])(active|selected|current)([\s_-]|$)/i.test(`${b.className || ""} ${b.parentElement?.className || ""}`),
+    );
     if (a) return a;
     // odd-one-out background color (ListKit: bg-[#EBECF0] on the active page only)
     const bgs = btns.map((b) => getComputedStyle(b).backgroundColor);
@@ -356,7 +439,7 @@ window.__superBrowserIdsEngine = (() => {
   // 4) ?page= URL param increment
   function pageParamAdvance() {
     const url = new URL(location.href);
-    for (const key of ["page", "p", "pg", "pageNumber", "offset"]) {
+    for (const key of ["page", "page_num", "pageNumber", "pg", "p", "offset"]) {
       if (url.searchParams.has(key)) {
         const val = parseInt(url.searchParams.get(key), 10);
         if (!Number.isNaN(val)) {
@@ -462,7 +545,7 @@ window.__superBrowserIdsEngine = (() => {
     return {
       selector: t.selector,
       rowCount: t.children.length,
-      columnCount: Object.keys(extractRowObject(t.children[0] || document.createElement("div"))).length,
+      columnCount: t.children[0] ? rowCells(t.children[0]).length : 0,
       homogeneity: Number(t.homogeneity.toFixed(2)),
       sample: nodeText(t.children[0] || t.table).slice(0, 120),
       index: tableIndex,
@@ -593,6 +676,7 @@ window.__superBrowserIdsEngine = (() => {
     findTables,
     getTableData,
     tableSignature,
+    detectBlock,
     clickNext,
     scrollTableDown,
     highlight,

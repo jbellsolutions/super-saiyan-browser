@@ -13,6 +13,8 @@
       .filter-row { padding: 8px 4px; border-bottom: 1px solid #f0f0f0; }
       .main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
       .grid { flex: 1; overflow: auto; }
+      .header-row { display: flex; align-items: center; padding: 8px 12px; font-weight: 600; background: #fafafa; border-bottom: 2px solid #ccc; }
+      .header-row > div { flex: 1; padding: 0 8px; }
       .lead-row { display: flex; align-items: center; padding: 10px 12px; border-bottom: 1px solid #eee; }
       .lead-row > div { flex: 1; padding: 0 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
       .pager { display: flex; align-items: center; gap: 4px; justify-content: flex-end; padding: 10px; }
@@ -39,6 +41,9 @@
     </aside>
 
     <main class="main">
+      <div class="header-row" id="headerRow">
+        <div>Name</div><div>Company</div><div>Title</div><div>Website</div><div>Country</div><div>City</div><div>Industry</div><div>Employees</div>
+      </div>
       <div class="grid" id="grid"></div>
       <div class="pager" id="pager">
         <button class="active" data-page="1">1</button>

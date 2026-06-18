@@ -1,24 +1,26 @@
 window.__superBrowserTabScraper = (() => {
   const engine = () => window.__superBrowserIdsEngine;
 
-  // Derive friendly contact columns from whatever the path-based walk captured.
-  function inferContactFields(fields, rawText) {
-    const out = { ...fields };
-    const blob = [rawText, ...Object.values(fields)].join("\n");
+  // Bonus columns derived from the whole row text (emails aren't in most grids; phones/LinkedIn
+  // often hide inside a description cell). The positional cells remain the real columns.
+  function deriveExtra(rawText, cells) {
+    const blob = [rawText, ...(cells || [])].join("\n");
+    const extra = {};
     const email = blob.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i);
-    if (email && !out.email) out.email = email[0];
+    if (email) extra.email = email[0];
     const phone = blob.match(/(?:\+?1[\s.-]?)?(?:\(?\d{3}\)?[\s.-]?)\d{3}[\s.-]?\d{4}/);
-    if (phone && !out.phone) out.phone = phone[0];
-    for (const value of Object.values(fields)) {
-      if (typeof value !== "string") continue;
-      if (/linkedin\.com/i.test(value) && !out.profile_url) out.profile_url = value;
-      else if (/^https?:\/\//i.test(value) && !out.website) out.website = value;
-    }
-    return out;
+    if (phone) extra.phone = phone[0];
+    const li = blob.match(/https?:\/\/[^\s,]*linkedin\.com\/[^\s,]+/i);
+    if (li) extra.linkedin = li[0];
+    return extra;
   }
-
   function enrich(rows) {
-    return rows.map((row) => ({ ...row, fields: inferContactFields(row.fields || {}, row.raw_text || "") }));
+    return rows.map((row) => ({
+      source: row.source,
+      raw_text: row.raw_text,
+      cells: row.cells || [],
+      extra: deriveExtra(row.raw_text || "", row.cells || []),
+    }));
   }
 
   return {
@@ -34,28 +36,33 @@ window.__superBrowserTabScraper = (() => {
       return engine()?.candidates || [];
     },
 
+    detectBlock() {
+      return engine()?.detectBlock() || null;
+    },
+
     extractRows() {
       const eng = engine();
-      if (!eng) return [];
+      if (!eng) return { rows: [], headers: null };
       eng.findTables();
-      const rows = eng.getTableData(window.__superBrowserSelectedTable?.selector);
-      return enrich(rows);
+      const { rows, headers } = eng.getTableData(window.__superBrowserSelectedTable?.selector);
+      return { rows: enrich(rows), headers };
     },
 
     async waitForRows({ timeoutMs = 10000 } = {}) {
       const eng = engine();
       const start = Date.now();
-      let last = [];
+      let last = { rows: [], headers: null };
       while (Date.now() - start < timeoutMs) {
         eng?.findTables();
-        const rows = this.extractRows();
-        last = rows;
-        // Require a real multi-column table before declaring ready, so a 1-column filter
-        // sidebar that's briefly the biggest block during a page load isn't accepted.
-        const cols = Object.keys(rows[0]?.fields || {}).length;
-        if (rows.length > 0 && cols >= 2) {
+        const res = this.extractRows();
+        last = res;
+        // Require a real multi-column table (≥2 cells) before declaring ready, so a 1-column
+        // filter sidebar that's briefly the biggest block during a page load isn't accepted.
+        const cols = res.rows[0]?.cells?.length || 0;
+        if (res.rows.length > 0 && cols >= 2) {
           return {
-            rows,
+            rows: res.rows,
+            headers: res.headers,
             waitedMs: Date.now() - start,
             candidateCount: eng?.candidates?.length || 0,
             selector: eng?.selectedSelector,
@@ -65,7 +72,8 @@ window.__superBrowserTabScraper = (() => {
         await new Promise((r) => setTimeout(r, 500));
       }
       return {
-        rows: last,
+        rows: last.rows,
+        headers: last.headers,
         waitedMs: Date.now() - start,
         candidateCount: eng?.candidates?.length || 0,
         selector: eng?.selectedSelector,
@@ -75,11 +83,11 @@ window.__superBrowserTabScraper = (() => {
     },
 
     detectLoginWall() {
-      const rows = this.extractRows();
-      if (rows.length >= 3) return null;
+      const res = this.extractRows();
+      if (res.rows.length >= 3) return null;
       const body = ((document.body && document.body.innerText) || "").toLowerCase();
       if (body.includes("captcha") || body.includes("are you human")) return "captcha";
-      if (document.querySelector("input[type='password']") && rows.length === 0) return "login_wall";
+      if (document.querySelector("input[type='password']") && res.rows.length === 0) return "login_wall";
       return null;
     },
 
@@ -103,7 +111,7 @@ window.__superBrowserTabScraper = (() => {
       return eng.clickNext(null, mode);
     },
 
-    // ---- picker / locate passthroughs (return Promises where interactive) ----
+    // ---- picker / locate passthroughs ----
     highlight({ index } = {}) {
       return engine()?.highlight(index);
     },

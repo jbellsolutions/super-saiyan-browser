@@ -27,3 +27,4 @@ dist/
 htmlcov/
 .coverage
 coverage.xml
+extension/private/

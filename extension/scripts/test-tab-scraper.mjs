@@ -44,12 +44,16 @@ async function main() {
   await page.evaluate(idsEngineJs + "\n" + scraperJs);
 
   const p1 = await page.evaluate(() => window.__superBrowserTabScraper.waitForRows({ timeoutMs: 3000 }));
-  const cols1 = Object.keys(p1.rows?.[0]?.fields || {}).length;
+  const cols1 = (p1.rows?.[0]?.cells || []).length;
   const firstText1 = (p1.rows?.[0]?.raw_text || "").toLowerCase();
-  console.log(`Page 1: ${p1.rows?.length} rows × ${cols1} cols · first="${firstText1.slice(0, 30)}"`);
+  const equalCells = new Set((p1.rows || []).map((r) => r.cells.length)).size === 1;
+  console.log(`Page 1: ${p1.rows?.length} rows × ${cols1} cols · headers=${p1.headers ? p1.headers.length : 0} · equalCells=${equalCells} · first="${firstText1.slice(0, 30)}"`);
 
   // 1. Grid picked over the 1-column filter sidebar (sidebar rows are "Funding", "Industry"...)
   if ((p1.rows || []).length < 3 || cols1 < 4) fail("expected the multi-column people grid, not the sidebar");
+  // 1b. Positional cells must be consistent (stable columns) and headers detected
+  if (!equalCells) fail("rows have inconsistent cell counts — columns would drift");
+  if (!p1.headers || p1.headers.length < cols1 - 1) fail("header row not detected");
   if (firstText1.includes("funding") || firstText1.includes("industry")) fail("picked the filter sidebar, not the grid");
   if (!firstText1.includes("ali khan")) fail("page-1 grid content not extracted");
 
