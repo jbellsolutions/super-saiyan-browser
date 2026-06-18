@@ -1,0 +1,11 @@
+{
+  "goal": "BDR social action: instagram comment for the contact profile URLs in context.",
+  "expected_route": [
+    "browser-use"
+  ],
+  "providers_allowed": [
+    "browser-use"
+  ],
+  "approval_required": true,
+  "playbook": "bdr_instagram_comment"
+}

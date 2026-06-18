@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "Super Saiyan Browser",
+  "version": "0.7.0",
+  "description": "Scrape paginated lists from ListKit, Skool, Facebook groups, and directories.",
+  "permissions": ["sidePanel", "tabs", "cookies", "storage", "activeTab", "scripting"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "side_panel": {
+    "default_path": "sidepanel/index.html"
+  },
+  "action": {
+    "default_title": "Super Saiyan Browser"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

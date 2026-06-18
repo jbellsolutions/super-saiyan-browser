@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ListKit People (real-structure fixture)</title>
+    <style>
+      /* Mirrors the live next.listkit.io People view: a small filter sidebar (decoy that
+         wins when the grid is briefly empty) + a large Tailwind div-grid + a numbered
+         <button> pager whose active page is marked only by background color. */
+      * { box-sizing: border-box; font-family: system-ui, sans-serif; }
+      body { margin: 0; display: flex; height: 100vh; }
+      .sidebar { width: 240px; padding: 12px; overflow: auto; border-right: 1px solid #eee; }
+      .filter-row { padding: 8px 4px; border-bottom: 1px solid #f0f0f0; }
+      .main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+      .grid { flex: 1; overflow: auto; }
+      .lead-row { display: flex; align-items: center; padding: 10px 12px; border-bottom: 1px solid #eee; }
+      .lead-row > div { flex: 1; padding: 0 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .pager { display: flex; align-items: center; gap: 4px; justify-content: flex-end; padding: 10px; }
+      .pager button { width: 32px; height: 32px; border: none; background: transparent; border-radius: 4px; cursor: pointer; }
+      .pager button.active { background: #ebecf0; }
+    </style>
+  </head>
+  <body>
+    <!-- Filter sidebar: many single-column rows. Smaller area than the grid, and only 1 field
+         per row, so the engine's area×children² + >=2-column preference must NOT pick it. -->
+    <aside class="sidebar" id="sidebar">
+      <div class="filter-row">Funding</div>
+      <div class="filter-row">Industry</div>
+      <div class="filter-row">Keywords</div>
+      <div class="filter-row">Technology</div>
+      <div class="filter-row">Headcount</div>
+      <div class="filter-row">Revenue</div>
+      <div class="filter-row">Country</div>
+      <div class="filter-row">City</div>
+      <div class="filter-row">State</div>
+      <div class="filter-row">Seniority</div>
+      <div class="filter-row">Department</div>
+      <div class="filter-row">Job Title</div>
+    </aside>
+
+    <main class="main">
+      <div class="grid" id="grid"></div>
+      <div class="pager" id="pager">
+        <button class="active" data-page="1">1</button>
+        <button data-page="2">2</button>
+        <button data-page="3">3</button>
+      </div>
+    </main>
+
+    <script>
+      const COLUMNS = ["Name", "Company", "Title", "Website", "Country", "City", "Industry", "Employees"];
+      const PAGES = {
+        1: [
+          ["Ali Khan", "Academy of Ophthalmic Education", "CEO", "aoece.com", "United States", "Richmond Hill", "health care", "1-10"],
+          ["Judy Bostic", "Bostic Steel", "Chief Executive Officer", "bosticsteel.com", "United States", "Dalton", "building", "11-50"],
+          ["Mike Ybarra", "Prizepicks", "CEO", "prizepicks.com", "United States", "Atlanta", "sports", "501-1000"],
+          ["Rafael Moreno", "Moreno Intl", "Chief Executive Officer", "movers.com.mx", "Mexico", "Monterrey", "transport", "1-10"],
+          ["Kevin Bauche", "Specialty Engineering", "CEO", "specialty-engineering.com", "United States", "Waterford", "construction", "11-50"],
+        ],
+        2: [
+          ["Alex Kim", "Echo Inc", "CEO", "echo.com", "United States", "Seattle", "software", "51-200"],
+          ["Maria Garcia", "Foxtrot Co", "COO", "foxtrot.com", "Spain", "Madrid", "retail", "201-500"],
+          ["Chris Wu", "Hotel Group", "CTO", "hotelgroup.com", "Singapore", "Singapore", "hospitality", "1001+"],
+          ["Dana Park", "India Corp", "VP Sales", "indiacorp.in", "India", "Mumbai", "finance", "11-50"],
+          ["Tom Brown", "Delta LLC", "Founder", "deltallc.com", "United States", "Austin", "energy", "1-10"],
+        ],
+        3: [
+          ["Sara Lee", "Gamma Partners", "Counsel", "gammapartners.com", "United States", "Boston", "legal", "11-50"],
+          ["John Doe", "Beta Legal", "Managing Attorney", "betalegal.com", "Canada", "Toronto", "legal", "1-10"],
+          ["Nina Patel", "Sigma Health", "Director", "sigmahealth.com", "United Kingdom", "London", "health care", "501-1000"],
+          ["Omar Said", "Theta Foods", "Owner", "thetafoods.com", "UAE", "Dubai", "food", "51-200"],
+          ["Lena Fischer", "Zeta GmbH", "CEO", "zeta.de", "Germany", "Berlin", "manufacturing", "201-500"],
+        ],
+      };
+
+      function renderPage(n) {
+        const grid = document.getElementById("grid");
+        grid.innerHTML = PAGES[n]
+          .map(
+            (row) =>
+              `<div class="lead-row">${row
+                .map((cell, i) =>
+                  i === 3
+                    ? `<div><a href="https://${cell}">${cell}</a></div>`
+                    : `<div>${cell}</div>`,
+                )
+                .join("")}</div>`,
+          )
+          .join("");
+        document.querySelectorAll("#pager button").forEach((b) => {
+          b.classList.toggle("active", b.dataset.page === String(n));
+        });
+      }
+
+      document.getElementById("pager").addEventListener("click", (e) => {
+        const btn = e.target.closest("button");
+        if (btn && PAGES[btn.dataset.page]) renderPage(Number(btn.dataset.page));
+      });
+
+      renderPage(1);
+    </script>
+  </body>
+</html>

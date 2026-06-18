@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "super-browser": {
+      "cwd": ".",
+      "command": "./mcp/super-browser-server",
+      "args": [],
+      "env": {
+        "SUPER_BROWSER_REPO_ROOT": "."
+      }
+    }
+  }
+}

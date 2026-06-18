@@ -1,0 +1,6 @@
+{
+  "goal": "Extract product names and prices from https://example.com/products as JSON.",
+  "expected_route": ["playwright", "hyperbrowser", "browser-use"],
+  "approval_required": false
+}
+

@@ -1,0 +1,7 @@
+{
+  "goal": "Open a desktop spreadsheet app, combine downloaded CSV files, export the result, and verify the file exists.",
+  "expected_route": ["orgo"],
+  "approval_required": false,
+  "required_env": ["ORGO_API_KEY"]
+}
+

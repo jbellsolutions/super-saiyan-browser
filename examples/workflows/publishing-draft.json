@@ -1,0 +1,6 @@
+{
+  "goal": "Draft a LinkedIn comment replying to a post, place it in the comment box, but do not publish until approved.",
+  "expected_route": ["browser-use", "airtop", "hyperbrowser"],
+  "approval_required": true
+}
+

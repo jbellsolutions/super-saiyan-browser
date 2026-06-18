@@ -1,0 +1,197 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "super-browser"
+version = "0.3.2"
+description = "Provider-neutral browser and computer automation router for agents."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "AI Integraterz" }]
+keywords = ["browser-automation", "mcp", "agents", "playwright", "browser-use"]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+mcp = ["mcp>=1.0"]
+playwright = ["playwright>=1.40"]
+browser-use = ["browser-use-sdk>=3.0,<4"]
+# Convenience meta-extra pulling in every Python-SDK-backed provider.
+# Orgo, Airtop, Hyperbrowser, Steel, and Decodo adapters use the
+# stdlib HTTP client / a CLI, so they need no extra Python packages here.
+all-providers = ["playwright>=1.40", "browser-use-sdk>=3.0,<4"]
+
+[project.scripts]
+super-browser = "super_browser.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.data-files]
+"share/super-browser" = [
+  ".env.example",
+  ".mcp.json",
+  "README.md",
+  "SKILL.md",
+  "pyproject.toml",
+]
+"share/super-browser/.codex-plugin" = [
+  ".codex-plugin/plugin.json",
+]
+"share/super-browser/configs" = [
+  "configs/browser-use-profile.sh",
+  "configs/hermes-mcp.yaml",
+]
+"share/super-browser/docs" = [
+  "docs/agent-quickstart.md",
+  "docs/anti-detection-results.md",
+  "docs/architecture.svg",
+  "docs/plugin-architecture.svg",
+  "docs/research-airtop.md",
+  "docs/research-anchor-orgo.md",
+  "docs/research-browser-use.md",
+  "docs/setup-walkthrough.md",
+  "docs/chrome-extension.md",
+  "docs/slack-agent-setup.md",
+]
+"share/super-browser/examples" = [
+  "examples/decodo_proxy.py",
+  "examples/lane_decodo_http.py",
+  "examples/rank1_browser_use.py",
+  "examples/rank1_playwright.py",
+  "examples/rank2_airtop.py",
+  "examples/rank2_hyperbrowser.py",
+  "examples/rank3_steel.py",
+  "examples/rank4_orgo.py",
+]
+"share/super-browser/examples/workflows" = [
+  "examples/workflows/authenticated-browsing.json",
+  "examples/workflows/brightdata_serp.json",
+  "examples/workflows/brightdata_unlock.json",
+  "examples/workflows/bdr_facebook_friend.json",
+  "examples/workflows/bdr_facebook_like.json",
+  "examples/workflows/bdr_facebook_message.json",
+  "examples/workflows/bdr_instagram_comment.json",
+  "examples/workflows/bdr_instagram_follow.json",
+  "examples/workflows/bdr_instagram_like.json",
+  "examples/workflows/bdr_twitter_follow.json",
+  "examples/workflows/desktop-fallback.json",
+  "examples/workflows/extraction.json",
+  "examples/workflows/lead-generation.json",
+  "examples/workflows/monitoring.json",
+  "examples/workflows/publishing-draft.json",
+  "examples/workflows/testing.json",
+]
+"share/super-browser/mcp" = [
+  "mcp/super-browser-server",
+]
+"share/super-browser/references" = [
+  "references/cost-model.md",
+  "references/live-test-matrix.md",
+  "references/orgo-api.md",
+  "references/provider-matrix.md",
+  "references/routing-playbook.md",
+  "references/security-and-approval-policy.md",
+]
+"share/super-browser/scripts" = [
+  "scripts/super-browser",
+  "scripts/verify-super-browser",
+]
+"share/super-browser/skills/airtop-specialist" = [
+  "skills/airtop-specialist/SKILL.md",
+]
+"share/super-browser/skills/brightdata-specialist" = [
+  "skills/brightdata-specialist/SKILL.md",
+]
+"share/super-browser/skills/browser-use-specialist" = [
+  "skills/browser-use-specialist/SKILL.md",
+]
+"share/super-browser/skills/decodo-http-specialist" = [
+  "skills/decodo-http-specialist/SKILL.md",
+]
+"share/super-browser/skills/hyperbrowser-specialist" = [
+  "skills/hyperbrowser-specialist/SKILL.md",
+]
+"share/super-browser/skills/orgo-specialist" = [
+  "skills/orgo-specialist/SKILL.md",
+]
+"share/super-browser/skills/playwright-specialist" = [
+  "skills/playwright-specialist/SKILL.md",
+]
+"share/super-browser/skills/publishing-safety-specialist" = [
+  "skills/publishing-safety-specialist/SKILL.md",
+]
+"share/super-browser/skills/steel-specialist" = [
+  "skills/steel-specialist/SKILL.md",
+]
+"share/super-browser/skills/super-browser-orchestrator" = [
+  "skills/super-browser-orchestrator/SKILL.md",
+]
+"share/super-browser/skills/super-browser-planner" = [
+  "skills/super-browser-planner/SKILL.md",
+]
+"share/super-browser/skills/super-browser-verifier" = [
+  "skills/super-browser-verifier/SKILL.md",
+]
+"share/super-browser/src/super_browser" = [
+  "src/super_browser/__init__.py",
+  "src/super_browser/adapters.py",
+  "src/super_browser/agent.py",
+  "src/super_browser/brightdata/__init__.py",
+  "src/super_browser/brightdata/browser.py",
+  "src/super_browser/brightdata/client.py",
+  "src/super_browser/brightdata/datasets.py",
+  "src/super_browser/brightdata/serp.py",
+  "src/super_browser/brightdata/unlocker.py",
+  "src/super_browser/brightdata/zones.py",
+  "src/super_browser/deliberation.py",
+  "src/super_browser/fleet.py",
+  "src/super_browser/profiles.py",
+  "src/super_browser/proxy.py",
+  "src/super_browser/artifacts.py",
+  "src/super_browser/bundle.py",
+  "src/super_browser/cli.py",
+  "src/super_browser/costs.py",
+  "src/super_browser/env_checklist.py",
+  "src/super_browser/handoff.py",
+  "src/super_browser/lead_scraper/__init__.py",
+  "src/super_browser/lead_scraper/hunt.py",
+  "src/super_browser/lead_scraper/executors/__init__.py",
+  "src/super_browser/lead_scraper/executors/directories.py",
+  "src/super_browser/lead_scraper/executors/facebook_groups.py",
+  "src/super_browser/lead_scraper/executors/google_dorks.py",
+  "src/super_browser/lead_scraper/executors/http_util.py",
+  "src/super_browser/lead_scraper/executors/linkedin.py",
+  "src/super_browser/lead_scraper/executors/meta_ad_library.py",
+  "src/super_browser/lead_scraper/executors/publicwww.py",
+  "src/super_browser/live_evidence.py",
+  "src/super_browser/live_tests.py",
+  "src/super_browser/mcp_server.py",
+  "src/super_browser/models.py",
+  "src/super_browser/policy.py",
+  "src/super_browser/production.py",
+  "src/super_browser/provider_signup.py",
+  "src/super_browser/providers.py",
+  "src/super_browser/redaction.py",
+  "src/super_browser/router.py",
+  "src/super_browser/runtime.py",
+  "src/super_browser/setup_helpers.py",
+  "src/super_browser/setup_walkthrough.py",
+  "src/super_browser/store.py",
+  "src/super_browser/verifier.py",
+]
+"share/super-browser/tests" = [
+  "tests/test_approvals.py",
+  "tests/test_brightdata_adapters.py",
+  "tests/test_deliberation.py",
+  "tests/test_execution.py",
+  "tests/test_provider_docs_parity.py",
+  "tests/test_redaction.py",
+  "tests/test_repo_structure.py",
+  "tests/test_profiles.py",
+  "tests/test_router_policy.py",
+  "tests/test_store_cli_mcp.py",
+  "tests/test_verifier.py",
+]

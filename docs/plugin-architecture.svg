@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="800" viewBox="0 0 1120 800" role="img" aria-label="Super Saiyan Browser plugin architecture">
+  <rect width="1120" height="800" fill="#0f172a"/>
+  <text x="560" y="48" text-anchor="middle" fill="#f8fafc" font-family="Arial, sans-serif" font-size="32" font-weight="700">Super Saiyan Browser Plugin Architecture</text>
+  <text x="560" y="78" text-anchor="middle" fill="#cbd5e1" font-family="Arial, sans-serif" font-size="15">GitHub link → setup walkthrough → skill + CLI + MCP router</text>
+
+  <rect x="56" y="104" width="1008" height="88" rx="14" fill="#0c4a6e" stroke="#38bdf8" stroke-width="2"/>
+  <text x="560" y="136" text-anchor="middle" fill="#e0f2fe" font-family="Arial, sans-serif" font-size="20" font-weight="700">Agent ingress</text>
+  <text x="560" y="164" text-anchor="middle" fill="#bae6fd" font-family="Arial, sans-serif" font-size="14">GitHub repo link · setup / setup_walkthrough · Claude/Codex plugin · Cursor MCP · optional Slack agent</text>
+
+  <rect x="56" y="218" width="1008" height="96" rx="14" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+  <text x="560" y="254" text-anchor="middle" fill="#e0f2fe" font-family="Arial, sans-serif" font-size="22" font-weight="700">Orchestrator</text>
+  <text x="560" y="286" text-anchor="middle" fill="#cbd5e1" font-family="Arial, sans-serif" font-size="15">Receives task, classifies risk, asks planner, gates approvals, dispatches, verifies</text>
+
+  <rect x="88" y="364" width="286" height="118" rx="12" fill="#172554" stroke="#60a5fa" stroke-width="2"/>
+  <text x="231" y="398" text-anchor="middle" fill="#dbeafe" font-family="Arial, sans-serif" font-size="20" font-weight="700">Planner</text>
+  <text x="231" y="427" text-anchor="middle" fill="#bfdbfe" font-family="Arial, sans-serif" font-size="14">Ranks providers</text>
+  <text x="231" y="450" text-anchor="middle" fill="#bfdbfe" font-family="Arial, sans-serif" font-size="14">Builds route and fallback plan</text>
+
+  <rect x="417" y="364" width="286" height="118" rx="12" fill="#14532d" stroke="#4ade80" stroke-width="2"/>
+  <text x="560" y="398" text-anchor="middle" fill="#dcfce7" font-family="Arial, sans-serif" font-size="20" font-weight="700">Provider Specialists</text>
+  <text x="560" y="427" text-anchor="middle" fill="#bbf7d0" font-family="Arial, sans-serif" font-size="14">Playwright, Browser Use, Hyperbrowser</text>
+  <text x="560" y="450" text-anchor="middle" fill="#bbf7d0" font-family="Arial, sans-serif" font-size="14">Airtop, Steel, Orgo, Decodo</text>
+
+  <rect x="746" y="364" width="286" height="118" rx="12" fill="#3b0764" stroke="#c084fc" stroke-width="2"/>
+  <text x="889" y="398" text-anchor="middle" fill="#f3e8ff" font-family="Arial, sans-serif" font-size="20" font-weight="700">Verifier + Safety</text>
+  <text x="889" y="427" text-anchor="middle" fill="#e9d5ff" font-family="Arial, sans-serif" font-size="14">Checks artifacts and traces</text>
+  <text x="889" y="450" text-anchor="middle" fill="#e9d5ff" font-family="Arial, sans-serif" font-size="14">Stops external writes for approval</text>
+
+  <rect x="56" y="546" width="1008" height="160" rx="14" fill="#111827" stroke="#64748b" stroke-width="2"/>
+  <text x="560" y="581" text-anchor="middle" fill="#f8fafc" font-family="Arial, sans-serif" font-size="20" font-weight="700">Runtime Surfaces</text>
+  <rect x="72" y="612" width="220" height="58" rx="10" fill="#0369a1"/>
+  <text x="182" y="647" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="16" font-weight="700">setup CLI / MCP</text>
+  <rect x="318" y="612" width="220" height="58" rx="10" fill="#1d4ed8"/>
+  <text x="428" y="647" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="16" font-weight="700">super-browser CLI</text>
+  <rect x="564" y="612" width="220" height="58" rx="10" fill="#047857"/>
+  <text x="674" y="647" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="16" font-weight="700">MCP Server</text>
+  <rect x="810" y="612" width="220" height="58" rx="10" fill="#7e22ce"/>
+  <text x="920" y="647" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="16" font-weight="700">Specialist Skills</text>
+
+  <path d="M560 192 L560 218" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M560 314 L560 364" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M374 423 L417 423" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M703 423 L746 423" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M560 482 L560 546" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+</svg>

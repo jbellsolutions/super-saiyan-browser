@@ -1,0 +1,7 @@
+{
+  "goal": "Use my logged-in browser session to extract the latest notifications from a private dashboard.",
+  "expected_route": ["browser-use", "airtop", "steel"],
+  "approval_required": true,
+  "required_env": ["BROWSER_USE_API_KEY"]
+}
+

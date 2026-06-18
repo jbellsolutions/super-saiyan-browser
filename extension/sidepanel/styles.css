@@ -1,0 +1,42 @@
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  margin: 0;
+  padding: 12px;
+  background: #0f1115;
+  color: #e8eaed;
+  font-size: 13px;
+}
+header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+h1 { font-size: 16px; margin: 0; }
+.badge { font-size: 11px; padding: 2px 8px; border-radius: 999px; background: #2b3a55; color: #cfe0ff; }
+.page-line { font-size: 11px; color: #8a93a6; word-break: break-all; margin-bottom: 10px; }
+
+section { margin-bottom: 12px; padding: 10px; background: #171a21; border-radius: 10px; }
+.step-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: #8a93a6; margin-bottom: 8px; }
+
+.row { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.row > * { flex: 1; }
+.row .icon { flex: 0 0 32px; }
+
+button { background: #2b59ff; color: white; border: none; border-radius: 8px; padding: 8px 10px; cursor: pointer; font-size: 13px; }
+button.secondary { background: #2a2f3a; color: #e8eaed; }
+button.icon { background: #2a2f3a; color: #e8eaed; padding: 8px 0; }
+button.danger { background: #5a1f1f; color: #ffd7d7; }
+button.full { width: 100%; margin-top: 8px; flex: none; }
+button.link { background: none; color: #8ab4ff; padding: 2px 4px; flex: 0; white-space: nowrap; }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+
+label.inline { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #b7bfce; }
+label.inline input { width: 64px; flex: none; }
+
+input, select { box-sizing: border-box; background: #0f1115; color: #e8eaed; border: 1px solid #333; border-radius: 6px; padding: 7px; }
+.muted { color: #8a93a6; font-size: 11.5px; margin-top: 8px; line-height: 1.4; }
+.muted.ok { color: #7ee0a1; }
+.muted.warn { color: #ffce7a; }
+
+#tableInfo, #paginationInfo { word-break: break-word; }
+#eventLog { max-height: 200px; overflow: auto; font-family: ui-monospace, monospace; font-size: 11px; white-space: pre-wrap; margin-top: 6px; }
+.progress { background: #12151c; }
+
+.footer { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.footer .muted { margin-top: 0; }

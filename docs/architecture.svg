@@ -1,0 +1,244 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 700" font-family="'JetBrains Mono', 'Menlo', 'Consolas', monospace">
+  <defs>
+    <!-- Background gradient -->
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#020617"/>
+      <stop offset="100%" stop-color="#0a0f24"/>
+    </linearGradient>
+    <!-- Glow filters -->
+    <filter id="cyanGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="greenGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="amberGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="violetGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="roseGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <!-- Arrowhead markers -->
+    <marker id="arrowCyan" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#22d3ee"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#10b981"/>
+    </marker>
+    <marker id="arrowAmber" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrowViolet" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#a78bfa"/>
+    </marker>
+    <marker id="arrowRose" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#f43f5e"/>
+    </marker>
+    <marker id="arrowOrange" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#f97316"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="700" fill="url(#bg)"/>
+
+  <!-- Subtle grid -->
+  <g opacity="0.03" stroke="#ffffff" stroke-width="0.5">
+    <line x1="0" y1="100" x2="900" y2="100"/><line x1="0" y1="200" x2="900" y2="200"/>
+    <line x1="0" y1="300" x2="900" y2="300"/><line x1="0" y1="400" x2="900" y2="400"/>
+    <line x1="0" y1="500" x2="900" y2="500"/><line x1="0" y1="600" x2="900" y2="600"/>
+  </g>
+
+  <!-- ===== TITLE ===== -->
+  <text x="450" y="38" text-anchor="middle" fill="#e2e8f0" font-size="20" font-weight="700" letter-spacing="6" filter="url(#softGlow)">
+    SUPER BROWSER STACK
+  </text>
+  <line x1="160" y1="48" x2="740" y2="48" stroke="#334155" stroke-width="1"/>
+
+  <!-- ===== RANK 1 — Playwright + Browser Use Cloud (Cyan) ===== -->
+  <rect x="70" y="68" width="760" height="72" rx="10" ry="10" fill="#062030" stroke="#22d3ee" stroke-width="1.5" opacity="0.95"/>
+  <rect x="70" y="68" width="760" height="72" rx="10" ry="10" fill="none" stroke="#22d3ee" stroke-width="1.5" filter="url(#cyanGlow)" opacity="0.4"/>
+  <!-- Rank badge -->
+  <rect x="85" y="80" width="58" height="22" rx="4" fill="#22d3ee" opacity="0.3"/>
+  <text x="114" y="95" text-anchor="middle" fill="#22d3ee" font-size="11" font-weight="700">RANK 1</text>
+  <!-- Name + subtitle -->
+  <text x="155" y="95" fill="#e2e8f0" font-size="15" font-weight="700">Playwright + Browser Use Cloud</text>
+  <!-- Sub-labels -->
+  <g opacity="0.7">
+    <rect x="450" y="80" width="190" height="18" rx="3" fill="#22d3ee" opacity="0.12"/>
+    <text x="545" y="93" text-anchor="middle" fill="#67e8f9" font-size="9">Local Scripted + Agentic</text>
+
+    <rect x="650" y="80" width="170" height="18" rx="3" fill="#22d3ee" opacity="0.12"/>
+    <text x="735" y="93" text-anchor="middle" fill="#67e8f9" font-size="9">Cloudflare Bypass</text>
+
+    <rect x="450" y="104" width="180" height="18" rx="3" fill="#22d3ee" opacity="0.12"/>
+    <text x="540" y="117" text-anchor="middle" fill="#67e8f9" font-size="9">CreepJS Passing</text>
+  </g>
+
+  <!-- ===== FALLBACK ARROW T1 → T2 ===== -->
+  <line x1="810" y1="140" x2="810" y2="175" stroke="#10b981" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowGreen)" opacity="0.6"/>
+
+  <!-- ===== AGENT ROUTING: T1 ←─── ===== -->
+  <text x="62" y="104" fill="#94a3b8" font-size="7" transform="rotate(-90, 62, 104)" opacity="0.6">AGENT ROUTING →</text>
+
+  <!-- ===== RANK 2 — Hyperbrowser (Emerald) ===== -->
+  <rect x="70" y="180" width="760" height="72" rx="10" ry="10" fill="#021a14" stroke="#10b981" stroke-width="1.5" opacity="0.95"/>
+  <rect x="70" y="180" width="760" height="72" rx="10" ry="10" fill="none" stroke="#10b981" stroke-width="1.5" filter="url(#greenGlow)" opacity="0.4"/>
+  <rect x="85" y="192" width="58" height="22" rx="4" fill="#10b981" opacity="0.3"/>
+  <text x="114" y="207" text-anchor="middle" fill="#10b981" font-size="11" font-weight="700">RANK 2</text>
+  <text x="155" y="207" fill="#e2e8f0" font-size="15" font-weight="700">Hyperbrowser</text>
+
+  <g opacity="0.7">
+    <rect x="450" y="192" width="190" height="18" rx="3" fill="#10b981" opacity="0.12"/>
+    <text x="545" y="205" text-anchor="middle" fill="#34d399" font-size="9">Managed Anti-Bot Cloud</text>
+
+    <rect x="650" y="192" width="170" height="18" rx="3" fill="#10b981" opacity="0.12"/>
+    <text x="735" y="205" text-anchor="middle" fill="#34d399" font-size="9">Scrape API</text>
+
+    <rect x="450" y="216" width="180" height="18" rx="3" fill="#10b981" opacity="0.12"/>
+    <text x="540" y="229" text-anchor="middle" fill="#34d399" font-size="9">Session Pools</text>
+  </g>
+
+  <!-- ===== FALLBACK ARROW T2 → T3 ===== -->
+  <line x1="810" y1="252" x2="810" y2="287" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowAmber)" opacity="0.6"/>
+
+  <!-- ===== RANK 2 — Airtop (Amber) ===== -->
+  <rect x="70" y="292" width="760" height="72" rx="10" ry="10" fill="#1a1402" stroke="#f59e0b" stroke-width="1.5" opacity="0.95"/>
+  <rect x="70" y="292" width="760" height="72" rx="10" ry="10" fill="none" stroke="#f59e0b" stroke-width="1.5" filter="url(#amberGlow)" opacity="0.4"/>
+  <rect x="85" y="304" width="58" height="22" rx="4" fill="#f59e0b" opacity="0.3"/>
+  <text x="114" y="319" text-anchor="middle" fill="#f59e0b" font-size="11" font-weight="700">RANK 2</text>
+  <text x="155" y="319" fill="#e2e8f0" font-size="15" font-weight="700">Airtop</text>
+
+  <g opacity="0.7">
+    <rect x="450" y="304" width="190" height="18" rx="3" fill="#f59e0b" opacity="0.12"/>
+    <text x="545" y="317" text-anchor="middle" fill="#fbbf24" font-size="9">Scheduled GTM</text>
+
+    <rect x="650" y="304" width="170" height="18" rx="3" fill="#f59e0b" opacity="0.12"/>
+    <text x="735" y="317" text-anchor="middle" fill="#fbbf24" font-size="9">Templates</text>
+
+    <rect x="450" y="328" width="180" height="18" rx="3" fill="#f59e0b" opacity="0.12"/>
+    <text x="540" y="341" text-anchor="middle" fill="#fbbf24" font-size="9">SOC2 / HIPAA</text>
+  </g>
+
+  <!-- ===== FALLBACK ARROW T3 → T4 ===== -->
+  <line x1="810" y1="364" x2="810" y2="399" stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowViolet)" opacity="0.6"/>
+
+  <!-- ===== RANK 3 — Steel (Violet) ===== -->
+  <rect x="70" y="404" width="760" height="72" rx="10" ry="10" fill="#0a041a" stroke="#a78bfa" stroke-width="1.5" opacity="0.95"/>
+  <rect x="70" y="404" width="760" height="72" rx="10" ry="10" fill="none" stroke="#a78bfa" stroke-width="1.5" filter="url(#violetGlow)" opacity="0.4"/>
+  <rect x="85" y="416" width="58" height="22" rx="4" fill="#a78bfa" opacity="0.3"/>
+  <text x="114" y="431" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="700">RANK 3</text>
+  <text x="155" y="431" fill="#e2e8f0" font-size="15" font-weight="700">Steel</text>
+
+  <g opacity="0.7">
+    <rect x="450" y="416" width="190" height="18" rx="3" fill="#a78bfa" opacity="0.12"/>
+    <text x="545" y="429" text-anchor="middle" fill="#c4b5fd" font-size="9">Open-Source Browser Infra</text>
+
+    <rect x="650" y="416" width="170" height="18" rx="3" fill="#a78bfa" opacity="0.12"/>
+    <text x="735" y="429" text-anchor="middle" fill="#c4b5fd" font-size="9">CDP Sessions</text>
+
+    <rect x="450" y="440" width="180" height="18" rx="3" fill="#a78bfa" opacity="0.12"/>
+    <text x="540" y="453" text-anchor="middle" fill="#c4b5fd" font-size="9">Self-Hostable</text>
+  </g>
+
+  <!-- ===== FALLBACK ARROW T4 → T5 ===== -->
+  <line x1="810" y1="476" x2="810" y2="511" stroke="#f43f5e" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowRose)" opacity="0.6"/>
+
+  <!-- ===== RANK 4 — Orgo Machines (Rose) ===== -->
+  <rect x="70" y="516" width="760" height="72" rx="10" ry="10" fill="#1a0210" stroke="#f43f5e" stroke-width="1.5" opacity="0.95"/>
+  <rect x="70" y="516" width="760" height="72" rx="10" ry="10" fill="none" stroke="#f43f5e" stroke-width="1.5" filter="url(#roseGlow)" opacity="0.4"/>
+  <rect x="85" y="528" width="58" height="22" rx="4" fill="#f43f5e" opacity="0.3"/>
+  <text x="114" y="543" text-anchor="middle" fill="#f43f5e" font-size="11" font-weight="700">RANK 4</text>
+  <text x="155" y="543" fill="#e2e8f0" font-size="15" font-weight="700">Orgo Machines</text>
+
+  <g opacity="0.7">
+    <rect x="450" y="528" width="190" height="18" rx="3" fill="#f43f5e" opacity="0.12"/>
+    <text x="545" y="541" text-anchor="middle" fill="#fda4af" font-size="9">&lt; 500ms Boot</text>
+
+    <rect x="650" y="528" width="170" height="18" rx="3" fill="#f43f5e" opacity="0.12"/>
+    <text x="735" y="541" text-anchor="middle" fill="#fda4af" font-size="9">Linux Desktop</text>
+
+    <rect x="450" y="552" width="180" height="18" rx="3" fill="#f43f5e" opacity="0.12"/>
+    <text x="540" y="565" text-anchor="middle" fill="#fda4af" font-size="9">When Browser Isn't Enough</text>
+  </g>
+
+  <!-- ===== RIGHT-SIDE FALLBACK LABEL ===== -->
+  <text x="834" y="135" fill="#94a3b8" font-size="7" opacity="0.5" transform="rotate(-90, 834, 135)">FALLBACK</text>
+  <text x="834" y="247" fill="#94a3b8" font-size="7" opacity="0.5" transform="rotate(-90, 834, 247)">FALLBACK</text>
+  <text x="834" y="359" fill="#94a3b8" font-size="7" opacity="0.5" transform="rotate(-90, 834, 359)">FALLBACK</text>
+  <text x="834" y="471" fill="#94a3b8" font-size="7" opacity="0.5" transform="rotate(-90, 834, 471)">FALLBACK</text>
+
+  <!-- ===== LEFT-SIDE AGENT ROUTING DECISION ARROWS ===== -->
+  <g opacity="0.35">
+    <path d="M55,104 L55,207" stroke="#22d3ee" stroke-width="1.5" stroke-dasharray="3,5" fill="none"/>
+    <path d="M55,207 L55,319" stroke="#10b981" stroke-width="1.5" stroke-dasharray="3,5" fill="none"/>
+    <path d="M55,319 L55,431" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="3,5" fill="none"/>
+    <path d="M55,431 L55,543" stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="3,5" fill="none"/>
+  </g>
+
+  <!-- Small decision diamonds on left -->
+  <g fill="#64748b" opacity="0.5">
+    <rect x="50" y="101" width="10" height="10" rx="2" transform="rotate(45, 55, 106)"/>
+    <rect x="50" y="314" width="10" height="10" rx="2" transform="rotate(45, 55, 319)"/>
+    <rect x="50" y="426" width="10" height="10" rx="2" transform="rotate(45, 55, 431)"/>
+  </g>
+
+  <!-- ===== DECODO PROXY LAYER (Bottom Bar) ===== -->
+  <rect x="70" y="604" width="760" height="36" rx="8" ry="8" fill="#1a0e02" stroke="#f97316" stroke-width="1.5" opacity="0.95"/>
+  <rect x="70" y="604" width="760" height="36" rx="8" ry="8" fill="none" stroke="#f97316" stroke-width="1.5" filter="url(#amberGlow)" opacity="0.3"/>
+  <text x="450" y="620" text-anchor="middle" fill="#fb923c" font-size="11" font-weight="700" letter-spacing="1">DECODO PROXY LAYER</text>
+  <text x="450" y="634" text-anchor="middle" fill="#fdba74" font-size="9" opacity="0.8">$2/GB Residential IPs</text>
+
+  <!-- Arrow from T5 to Decodo -->
+  <line x1="810" y1="588" x2="810" y2="604" stroke="#f97316" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowOrange)" opacity="0.5"/>
+
+  <!-- ===== LEGEND (Bottom-Right) ===== -->
+  <rect x="610" y="650" width="240" height="38" rx="6" fill="#0f172a" stroke="#334155" stroke-width="1" opacity="0.85"/>
+  <text x="630" y="670" fill="#94a3b8" font-size="8" font-weight="600" letter-spacing="2">LEGEND</text>
+
+  <!-- Legend items inline -->
+  <rect x="630" y="676" width="8" height="8" rx="2" fill="#22d3ee" opacity="0.5"/>
+  <text x="643" y="683" fill="#64748b" font-size="7">Anti-Detect</text>
+
+  <rect x="700" y="676" width="8" height="8" rx="2" fill="#10b981" opacity="0.5"/>
+  <text x="713" y="683" fill="#64748b" font-size="7">Anti-Bot Cloud</text>
+
+  <rect x="770" y="676" width="8" height="8" rx="2" fill="#f59e0b" opacity="0.5"/>
+  <text x="783" y="683" fill="#64748b" font-size="7">No-Code</text>
+
+  <rect x="630" y="686" width="8" height="8" rx="2" fill="#a78bfa" opacity="0.5"/>
+  <text x="643" y="693" fill="#64748b" font-size="7">CDP Infra</text>
+
+  <rect x="700" y="686" width="8" height="8" rx="2" fill="#f43f5e" opacity="0.5"/>
+  <text x="713" y="693" fill="#64748b" font-size="7">Full VMs</text>
+
+  <rect x="770" y="686" width="8" height="8" rx="2" fill="#f97316" opacity="0.5"/>
+  <text x="783" y="693" fill="#64748b" font-size="7">Proxy</text>
+
+  <!-- ===== DOTTED VERTICAL SEPARATOR (visual polish) ===== -->
+  <line x1="430" y1="68" x2="430" y2="640" stroke="#1e293b" stroke-width="1" stroke-dasharray="2,6" opacity="0.4"/>
+
+  <!-- Subtle corner pixel decorations -->
+  <g opacity="0.15" fill="#334155">
+    <rect x="4" y="4" width="6" height="3" rx="1"/>
+    <rect x="4" y="4" width="3" height="6" rx="1"/>
+    <rect x="890" y="4" width="6" height="3" rx="1"/>
+    <rect x="893" y="4" width="3" height="6" rx="1"/>
+    <rect x="4" y="693" width="6" height="3" rx="1"/>
+    <rect x="4" y="690" width="3" height="6" rx="1"/>
+    <rect x="890" y="693" width="6" height="3" rx="1"/>
+    <rect x="893" y="690" width="3" height="6" rx="1"/>
+  </g>
+</svg>

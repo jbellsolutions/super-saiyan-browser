@@ -1,0 +1,166 @@
+# =============================================================================
+# Hermes Agent MCP Server Configuration for Super Saiyan Browser Stack
+# =============================================================================
+#
+# This YAML block is intended to be included in your Hermes config.yaml file
+# under the `mcp_servers:` key. It configures MCP (Model Context Protocol)
+# servers for each provider in the capability-routed Super Saiyan Browser stack
+# (escalation ranks 1-4 plus the separate Decodo raw-HTTP lane).
+#
+# Usage:
+#   1. Copy this entire block into your ~/.hermes/config.yaml under mcp_servers:
+#   2. Fill in your API keys for the providers you use.
+#   3. Set `enabled: true/false` to toggle each provider on/off.
+#   4. Restart Hermes Agent to pick up new MCP servers.
+#
+# Rate Limiting Notes:
+#   - Browser Use Cloud: 3 concurrent sessions on free tier, 10 tasks/mo.
+#     Dev plan ($29/mo) removes concurrency limits but proxy bandwidth is
+#     billed at $5/GB. Recommend max 2 parallel sessions for stability.
+#   - Airtop: Starter plan gives 30K-150K credits/mo. Each browser session
+#     consumes credits per minute. Recommend polling interval of 5s and
+#     max_wait of 300s for agent tasks.
+#
+# Timeout Recommendations:
+#   - Browser Use MCP: 300s (complex agent tasks can take 2-4 minutes)
+#   - Airtop HTTP: 300s (poll-based; agent tasks can run several minutes)
+#
+# Security: Never commit API keys to version control. Use environment
+# variables (${VAR}) or a secrets manager. This file is a template.
+# =============================================================================
+
+mcp_servers:
+
+  # ---------------------------------------------------------------------------
+  # Super Saiyan Browser orchestration MCP (plan/run/approve/verify + profiles/fleets)
+  # ---------------------------------------------------------------------------
+  # Primary ingress for Hermes browser_operator and any agent that needs
+  # capability-first routing across all providers in one surface.
+  #
+  # Install: run `super-browser init-mcp --path ~/.hermes/mcp.json` from the
+  # super-browser repo, or merge the block below into ~/.hermes/config.yaml.
+  # ---------------------------------------------------------------------------
+  super-browser:
+    enabled: true
+    type: stdio
+    command: "${SUPER_BROWSER_REPO_ROOT}/mcp/super-browser-server"
+    cwd: "${SUPER_BROWSER_REPO_ROOT}"
+    env:
+      SUPER_BROWSER_REPO_ROOT: "${SUPER_BROWSER_REPO_ROOT}"
+      SUPER_BROWSER_STATE_DIR: "${SUPER_BROWSER_STATE_DIR:-~/.super-browser}"
+    timeout: 300
+    notes:
+      - Exposes plan_browser_task, run_browser_task, profile tools, fleet runs
+      - Use browser_operator identity in Hermes for Slack-ready browser ops
+      - Provider-native MCP (browser-use below) is optional when super-browser is enabled
+
+  # ---------------------------------------------------------------------------
+  # Rank 1: Browser Use Cloud MCP Server
+  # ---------------------------------------------------------------------------
+  # Primary workhorse for anti-detection browsing. Uses a hardened,
+  # forked Chromium that passes CreepJS and BrowserLeaks fingerprinting
+  # tests. Best for Meta, LinkedIn, Cloudflare, and PerimeterX.
+  #
+  # API Key: Get yours at https://cloud.browser-use.com → API Keys
+  # Pricing: $29/mo Dev plan (includes $29 credits)
+  # Docs: https://docs.browser-use.com
+  # ---------------------------------------------------------------------------
+  browser-use:
+    enabled: true                           # Set to false to disable this provider
+    type: http                              # HTTP-based MCP (streamable-http transport)
+    url: https://api.browser-use.com/v3/mcp
+    headers:
+      Authorization: "Bearer ${BROWSER_USE_API_KEY}"  # Set BROWSER_USE_API_KEY env var
+    timeout: 300                            # Max seconds for agent tasks (recommended)
+    # Retry configuration
+    retry:
+      max_attempts: 3
+      backoff: exponential                  # 1s, 2s, 4s between retries
+    # Notes:
+    # - Sessions auto-expire after 15 min inactivity, max 4 hours
+    # - Recording URLs expire in 1 hour
+    # - Custom proxy requires Enterprise plan (cannot use Decodo directly)
+    # - LLM costs: 1.2x Anthropic rates (e.g., Sonnet 4.6: $3.60/$18.00 per 1M tokens)
+
+  # ---------------------------------------------------------------------------
+  # Rank 2: Airtop HTTP Endpoint (not MCP-native, but integrated via REST)
+  # ---------------------------------------------------------------------------
+  # Airtop is a cloud browser SaaS platform, not an MCP server. However,
+  # it can be integrated into Hermes via its REST API. This section
+  # documents the environment variables and configuration needed for
+  # the rank2_airtop.py example script and the super-browser skill's
+  # routing algorithm.
+  #
+  # API Key: Get yours at https://portal.airtop.ai/api-keys
+  # Pricing: Starter plan $26/mo (30K-150K credits)
+  # Docs: https://docs.airtop.ai
+  # ---------------------------------------------------------------------------
+  # NOTE: Airtop does NOT provide an MCP server endpoint. It is accessed
+  # via REST API calls from the super-browser skill. The configuration
+  # below is for environment variable reference only.
+  #
+  # airtop:
+  #   enabled: false                         # No MCP server; REST only
+  #   base_url: "https://api.airtop.ai"     # REST API base URL
+  #   api_key: "${AIRTOP_API_KEY}"           # From portal.airtop.ai/api-keys
+  #   endpoints:
+  #     create_session: "/v1/sessions"       # POST - create browser session
+  #     trigger_agent: "/v1/sessions/{id}/agent"  # POST - start agent task
+  #     poll_status: "/v1/sessions/{id}/agent/{run_id}"  # GET - check status
+  #   polling:
+  #     interval: 5                          # Seconds between status polls
+  #     max_wait: 300                        # Max seconds to wait for completion
+  #   notes:
+  #     - Not MCP-native; wrap in Hermes skill function
+  #     - Webhook support available for push-based results
+  #     - Custom proxy on Professional plan ($170/mo)
+  #     - SOC2/HIPAA compliance for enterprise
+  #     - Built-in residential proxy on Starter+
+
+  # ---------------------------------------------------------------------------
+  # Rank 4: Orgo Machines (not MCP-native; integrated via REST + CLI)
+  # ---------------------------------------------------------------------------
+  # Orgo provides full desktop VMs, not browser sessions. It does not
+  # expose an MCP server. Integration is via the Orgo REST API and the
+  # rank4_orgo.py example script.
+  #
+  # API Key: Get yours at https://orgo.ai → Dashboard
+  # Pricing: Hacker plan $29/mo (5 VMs, 4GB RAM each)
+  # Docs: https://docs.orgo.ai
+  # ---------------------------------------------------------------------------
+  # orgo:
+  #   enabled: false                         # No MCP server; REST only
+  #   base_url: "https://api.orgo.ai"       # REST API base URL
+  #   api_key: "${ORGO_API_KEY}"             # From Orgo dashboard
+  #   endpoints:
+  #     create_vm: "/v1/machines"           # POST - provision VM
+  #     get_status: "/v1/machines/{id}"     # GET - check VM status
+  #     execute: "/v1/machines/{id}/execute"  # POST - run script in VM
+  #     download: "/v1/machines/{id}/files"   # GET - download file from VM
+  #     screenshot: "/v1/machines/{id}/screenshot"  # GET - capture display
+  #     terminate: "/v1/machines/{id}"       # DELETE - destroy VM
+  #   polling:
+  #     interval: 10                         # Seconds between status polls
+  #     max_wait: 300                        # Max seconds for VM to boot
+  #   notes:
+  #     - Sub-500ms cold boot with Firecracker micro-VMs
+  #     - Full Linux desktop (Xfce/Fluxbox)
+  #     - Double encryption at rest
+  #     - No built-in anti-detection (raw VMs)
+  #     - Open-source clone: github.com/Julianb233/orgo-clone
+
+# =============================================================================
+# Full Provider Enable/Disable Quick Reference
+# =============================================================================
+#
+# To disable a provider temporarily, set its `enabled: false`.
+# To switch which provider is used for a given task, use the
+# super-browser skill's capability routing (see SKILL.md).
+#
+#   Provider          | MCP?  | Enabled by     | Disable by
+#   ------------------|-------|----------------|-----------------
+#   Browser Use Cloud | Yes   | enabled: true  | enabled: false
+#   Airtop            | No    | REST only      | N/A (not MCP)
+#   Orgo Machines     | No    | REST only      | N/A (not MCP)
+#
+# =============================================================================

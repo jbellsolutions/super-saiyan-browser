@@ -1,0 +1,6 @@
+{
+  "goal": "Open a local app, test signup form validation, capture screenshots, and verify no network errors.",
+  "expected_route": ["playwright"],
+  "approval_required": false
+}
+

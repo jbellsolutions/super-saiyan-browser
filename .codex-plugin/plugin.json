@@ -1,0 +1,41 @@
+{
+  "name": "super-browser",
+  "version": "0.3.2",
+  "description": "Universal browser and computer automation plugin for agents. Includes specialist skills, a routing CLI, and an MCP server for choosing the right browser, proxy, authenticated session, or desktop backend.",
+  "author": {
+    "name": "AI Integraterz",
+    "url": "https://github.com/jbellsolutions"
+  },
+  "homepage": "https://github.com/jbellsolutions/super-saiyan-browser",
+  "repository": "https://github.com/jbellsolutions/super-saiyan-browser",
+  "license": "MIT",
+  "keywords": [
+    "browser",
+    "automation",
+    "agents",
+    "mcp",
+    "computer-use",
+    "playwright"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Super Saiyan Browser",
+    "shortDescription": "Route agent browser and computer automation to the right tool.",
+    "longDescription": "Super Saiyan Browser gives agents a documented plugin, CLI, and MCP interface for browser automation. Routing is capability-first (auth, anti-bot, CAPTCHA, profiles, proxy injection, fleet, desktop, raw HTTP) with an escalation rank as the cost tie-breaker: local Playwright and Browser Use (rank 1), Hyperbrowser/Airtop cloud scale (rank 2), Steel hosted Chromium (rank 3), Orgo desktop (rank 4), and raw HTTP to Decodo on a separate lane, with specialist skills and approval policy for external writes.",
+    "developerName": "AI Integraterz",
+    "category": "Engineering",
+    "capabilities": ["Read", "Write", "Interactive"],
+    "websiteURL": "https://github.com/jbellsolutions/super-saiyan-browser",
+    "privacyPolicyURL": "https://github.com/jbellsolutions/super-saiyan-browser",
+    "termsOfServiceURL": "https://github.com/jbellsolutions/super-saiyan-browser",
+    "defaultPrompt": [
+      "Plan this browser automation task",
+      "Choose the best browser tool",
+      "Verify this browser workflow"
+    ],
+    "brandColor": "#2563EB",
+    "screenshots": []
+  }
+}
+

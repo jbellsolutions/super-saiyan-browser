@@ -1,0 +1,5 @@
+{
+  "goal": "Unlock public page content",
+  "url": "https://example.com",
+  "providers_allowed": ["brightdata-unlocker"]
+}

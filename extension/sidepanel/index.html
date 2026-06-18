@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Super Saiyan Browser</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Super Saiyan Browser</h1>
+      <span id="modeBadge" class="badge">in-tab</span>
+    </header>
+
+    <div class="page-line"><span id="pageUrl">—</span></div>
+
+    <section>
+      <div class="step-label">1 · Table</div>
+      <div class="row">
+        <button id="detectBtn" class="secondary">Detect table</button>
+        <button id="prevBtn" class="icon" title="Previous candidate">◀</button>
+        <button id="nextCandBtn" class="icon" title="Next candidate">▶</button>
+        <button id="pickBtn" class="secondary">Pick manually</button>
+      </div>
+      <div id="tableInfo" class="muted">No table detected yet.</div>
+    </section>
+
+    <section>
+      <div class="step-label">2 · Pagination</div>
+      <div class="row">
+        <select id="strategySelect">
+          <option value="auto">Auto</option>
+          <option value="next_button">Next button</option>
+          <option value="load_more">Load more</option>
+          <option value="infinite_scroll">Infinite scroll</option>
+        </select>
+        <button id="locateBtn" class="secondary">Locate next button</button>
+      </div>
+      <div id="paginationInfo" class="muted">Auto-detects numbered pagers, next buttons, load-more, or scroll.</div>
+    </section>
+
+    <section>
+      <div class="step-label">3 · Run</div>
+      <div class="row">
+        <label class="inline">Max pages
+          <input id="maxPages" type="number" min="1" max="1000" value="50" />
+        </label>
+        <button id="runBtn">Run scrape</button>
+        <button id="stopBtn" class="danger" disabled>Stop</button>
+      </div>
+      <button id="exportBtn" class="full" hidden>Export CSV</button>
+    </section>
+
+    <section class="progress">
+      <div id="progressText" class="muted">Idle</div>
+      <div id="eventLog"></div>
+    </section>
+
+    <div class="footer">
+      <span id="savedInfo" class="muted"></span>
+      <button id="clearBtn" class="link">Clear saved selectors</button>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
