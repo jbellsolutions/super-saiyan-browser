@@ -50,4 +50,4 @@ Stops when the list ends, next is disabled, no new deduped rows appear, or conte
 
 ## Advanced: cloud API (optional)
 
-The client extension does not need a backend. If you self-host an API for cloud storage or profile sync, deploy your own server and keep credentials in your host's env vars — never in this repo. See internal `docs/railway-api-setup.md` in the private Super Saiyan Browser repo if you maintain that fork.
+The client extension does not need a backend. Self-hosted cloud sync is advanced and optional — deploy your own API and keep credentials in your host env vars, never in git.

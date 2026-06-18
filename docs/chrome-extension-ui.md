@@ -2,4 +2,4 @@
 
 See **[chrome-extension.md](chrome-extension.md)** for the current install and scrape guide.
 
-This file is kept for maintainers. The extension is client-only; Railway/API options live in `extension/private/` (private repo only).
+This file is kept for maintainers. The extension is client-only; see [chrome-extension.md](chrome-extension.md).
